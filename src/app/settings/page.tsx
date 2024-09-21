@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react"
 import axios from "axios"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import IsAuth from "@/lib/isauth"
 
 export default function Settings() {
 

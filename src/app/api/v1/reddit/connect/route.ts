@@ -3,7 +3,6 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
 import axios from "axios";
-require('dotenv').config()
 
 export async function POST(req: NextRequest) {
 

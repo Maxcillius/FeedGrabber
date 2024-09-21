@@ -15,6 +15,7 @@ export default function Feeds() {
     const [checking, setChecking] = useState(true);
     const { data: session, status } = useSession();
   
+ 
     const fetchAccountStatus = useCallback(async () => {
       try {
         const { data } = await axios.get('/api/v1/connected');
@@ -29,6 +30,7 @@ export default function Feeds() {
       }
     }, []);
   
+
     const fetchRedditPosts = useCallback(async () => {
       try {
         const { data } = await axios.get('/api/v1/reddit/fetch');
@@ -50,6 +52,7 @@ export default function Feeds() {
       }
     }, []);
   
+
     useEffect(() => {
       const initializeFeed = async () => {
         const isConnected = await fetchAccountStatus();

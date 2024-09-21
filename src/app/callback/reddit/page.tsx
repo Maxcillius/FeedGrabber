@@ -3,9 +3,9 @@
 import axios from "axios";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { Suspense } from 'react'
 
-export default function Callback() {
-
+function Main() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const code = searchParams.get('code');
@@ -49,5 +49,15 @@ export default function Callback() {
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function Callback() {
+    return (
+        <>
+            <Suspense>
+                <Main   />
+            </Suspense>
+        </>
     )
 }
