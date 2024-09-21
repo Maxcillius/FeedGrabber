@@ -38,8 +38,5 @@ export const authConfig = {
                 }
             }
         }
-    },
-    // pages: {
-    //     signIn: '/auth/signin'
-    // }
+    }
 }

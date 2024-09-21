@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import axios from "axios"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import IsAuth from "@/lib/isauth"
 
 export default function Settings() {
 
@@ -11,33 +12,31 @@ export default function Settings() {
     const [ twitter, setTwitter ] = useState(false);
     const [ instagram, setInstagram ] = useState(false);
 
-
-    const { data: session, status } = useSession();
     const router = useRouter();
+    const { data: session, status } = useSession();
 
     const name = session?.user?.name;
     const email = session?.user?.email;
 
+    const isConnected = useCallback(async () => {
+        const { data } = await axios.get('/api/v1/connected');
+        data.accounts.map((data: any) => {
+            if(data === 'reddit') setReddit(true);
+            else if(data === 'twitter') setTwitter(true);
+            else if(data === 'instagram') setInstagram(true);
+        })
+    }, [])
+
+
+    if(status === 'unauthenticated') router.push('/');
+
     useEffect(() => {
-
-        if(status === 'unauthenticated') router.push("/");
-        const isConnected = async () => {
-            const response = await axios.get('/api/v1/connected');
-
-            response.data.accounts.map((data: any) => {
-                if(data === 'reddit') setReddit(true);
-                else if(data === 'twiter') setTwitter(true);
-                else if(data === 'instagram') setInstagram(true);
-            })
-
-        }
-
         isConnected();
     }, [])
 
     const connect = async () => {
         const client_id = 'yvLf91cRahhGeDh2NC3tkg';
-        const redirect_uri = 'http://localhost:3000/callback';
+        const redirect_uri = 'http://localhost:3000/callback/reddit';
         const state = Math.random().toString(36).substring(2);
 
         window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=${client_id}&response_type=code&state=${state}&redirect_uri=${redirect_uri}&duration=permanent&scope=read`;
@@ -46,7 +45,7 @@ export default function Settings() {
 
     const disconnect = async () => {
         try {
-            const res = await axios('/api/v1/reddit/disconnect');
+            await axios('/api/v1/reddit/disconnect');
 
             setReddit(false);
         } catch(error) {

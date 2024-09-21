@@ -1,7 +1,7 @@
 'use client'
 
 import Card from "@/components/ui/card"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import axios from "axios";
 import { RedditPost } from "@/types/redditPost";
 import CardSkeleton from "@/components/ui/CardSkeleton";
@@ -9,69 +9,65 @@ import TitleSkeleton from "@/components/ui/TitleSkeleton";
 import { useSession } from "next-auth/react";
 
 export default function Feeds() {
-    const [ redditFeeds, setRedditFeeds ] = useState<RedditPost[]>([]);
-    const [ accountConnected, setAccountConnected ] = useState(false);
-    const [ checking, setChecking ] = useState(true);
-    const [ isloading, setLoading ] = useState(true);
-
+    const [redditFeeds, setRedditFeeds] = useState<RedditPost[]>([]);
+    const [accountConnected, setAccountConnected] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [checking, setChecking] = useState(true);
     const { data: session, status } = useSession();
-
+  
+    const fetchAccountStatus = useCallback(async () => {
+      try {
+        const { data } = await axios.get('/api/v1/connected');
+        const isConnected = data.accounts.some((account: string) => 
+          ['reddit', 'twitter', 'instagram'].includes(account)
+        );
+        setAccountConnected(isConnected);
+        return isConnected;
+      } catch (error) {
+        console.error('Error checking account status:', error);
+        return false;
+      }
+    }, []);
+  
+    const fetchRedditPosts = useCallback(async () => {
+      try {
+        const { data } = await axios.get('/api/v1/reddit/fetch');
+        const posts: RedditPost[] = data.data.children.map((info: any) => ({
+          id: info.data.id,
+          permalink: `https://www.reddit.com${info.data.permalink}`,
+          subreddit: info.data.subreddit,
+          thumbnail: info.data.thumbnail,
+          thumbnail_height: info.data.thumbnail_height,
+          thumbnail_width: info.data.thumbnail_width,
+          title: info.data.title,
+          upvote: info.data.ups
+        }));
+        setRedditFeeds(posts);
+      } catch (error) {
+        console.error('Error fetching Reddit posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, []);
+  
     useEffect(() => {
-
-        const redditConnected = async () => {
-            try {
-                const response = await axios.get('/api/v1/connected');
-
-                response.data.accounts.forEach((data: string) => {
-                    if(data === 'reddit' || data === 'twitter' || data === 'instagram') {
-                        setAccountConnected(true);
-                    }
-                })
-
-                if(accountConnected) data();
-
-                setChecking(false);
-
-            } catch(error) {
-                setChecking(false);
-            }
-            
+      const initializeFeed = async () => {
+        const isConnected = await fetchAccountStatus();
+        setChecking(false);
+        if (isConnected) {
+          await fetchRedditPosts();
+        } else {
+          setIsLoading(false);
         }
-
-        redditConnected();
-
-        const data = async () => {
-            try {
-                const response = await axios.get('/api/v1/reddit/fetch');
-
-                const posts = response.data.data.children.map((info: any) => ({
-                    id: info.data.id,
-                    permalink: 'https://www.reddit.com' + info.data.permalink,
-                    subreddit: info.data.subreddit,
-                    thumbnail: info.data.thumbnail,
-                    thumbnail_height: info.data.thumbnail_height,
-                    thumbnail_width: info.data.thumbnail_width,
-                    title: info.data.title,
-                    upvote: info.data.ups
-                }));
-
-                setRedditFeeds(posts);
-
-                setTimeout(() => {
-                    setLoading(false);
-                }, 1000)
-    
-            } catch(error) {
-                console.log(error);
-            }
-        }
-
-    }, [])
+      };
+  
+      initializeFeed();
+    }, []);
 
     return (
         <div>
             <div className="mt-40">
-                {   !isloading && status === 'authenticated' &&
+                {   !isLoading && status === 'authenticated' &&
                     <div className="flex flex-col justify-center">
                         {   accountConnected &&
                             <div>
@@ -86,7 +82,7 @@ export default function Feeds() {
                     </div>
                 }
                 {
-                    isloading && status === 'authenticated' &&
+                    isLoading && status === 'authenticated' &&
                     <div className="mt-40 flex flex-col justify-center">
                         <div>
                             <div className={`${accountConnected ? '' : 'collapse hidden'} flex flex-row justify-center`}>

@@ -6,13 +6,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     const session = await getServerSession(authConfig);
 
-    if(!session) return NextResponse.json({
-        message: "Not Authorized"
-    }, 
-        {
-            status: 401
-        }
-    )
+    if(!session) return NextResponse.redirect(new URL('/', 'http://localhost:3000'));
 
     const uid = session.user.uid;
 
@@ -25,6 +19,8 @@ export async function GET() {
     const accounts = response.map((data) => {
         return data.platform
     })
+
+    console.log(accounts);
 
     return NextResponse.json({
         accounts: accounts

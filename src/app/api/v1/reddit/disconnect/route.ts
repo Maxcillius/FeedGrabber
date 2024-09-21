@@ -23,7 +23,7 @@ export async function GET() {
             }
         })
     
-        const del = await db.socialAccount.delete({
+        await db.socialAccount.delete({
             where: {
                 id: response?.id
             }
@@ -35,7 +35,7 @@ export async function GET() {
     } catch(error) {
         console.log(error);
         return NextResponse.json({
-            message: "error occurred"
+            message: "error occurred while disconnecting account"
         })
     }
 }

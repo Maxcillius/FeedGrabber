@@ -23,7 +23,7 @@ export async function GET() {
             }
         })
     
-        const del = await db.socialAccount.delete({
+        await db.socialAccount.delete({
             where: {
                 id: response?.id
             }

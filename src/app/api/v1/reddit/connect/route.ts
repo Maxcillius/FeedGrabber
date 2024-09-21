@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
 import axios from "axios";
+require('dotenv').config()
 
 export async function POST(req: NextRequest) {
 
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
     try {
         const id = 'yvLf91cRahhGeDh2NC3tkg';
         const secret = 'ih3cLWlym5cNieuQlcO3YgwHk5o6wQ';
-        const redirect_uri = 'http://localhost:3000/callback'
+        const redirect_uri = 'http://localhost:3000/callback/reddit';
     
         const body = await req.json();
         const code = body.code;
@@ -55,7 +56,8 @@ export async function POST(req: NextRequest) {
 
 
     } catch(error) {
-        console.log(error);
-        return NextResponse.json(error);
+        return NextResponse.json({
+            message: "Some error occurred"
+        });
     }
 }
