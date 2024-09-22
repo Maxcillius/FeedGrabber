@@ -42,7 +42,7 @@ function Main() {
                     {
                         !alert &&
                         <>
-                            <h1 className="text-5xl text-white">Connecting</h1>
+                            <h1 className="text-5xl text-black dark:text-white">Connecting</h1>
                             <div className="loader"></div>
                         </>
                     }

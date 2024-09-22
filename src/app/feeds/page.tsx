@@ -74,7 +74,7 @@ export default function Feeds() {
                     <div className="flex flex-col justify-center">
                         {   accountConnected &&
                             <div>
-                                <h1 className="text-5xl text-white font-bold text-center p-5">Reddit</h1>
+                                <h1 className="text-5xl dark:text-white text-black font-bold text-center p-5">Reddit</h1>
                                 <div className={`${accountConnected ? '' : 'collapse hidden'} flex flex-wrap flex-row justify-evenly gap-10`}>
                                     {   
                                         <Card posts={redditFeeds}/>
@@ -115,13 +115,13 @@ export default function Feeds() {
                 {
                     !accountConnected && !checking && status === 'authenticated' &&
                     <div className="flex flex-row justify-center">
-                        <h1 className="text-white text-xl font-bold">Connect any account to view posts</h1>
+                        <h1 className="dark:text-white text-black text-xl font-bold">Connect any account to view posts</h1>
                     </div>
                 }
                 {
                     status === 'unauthenticated' && !checking &&
                     <div className="flex flex-row justify-center">
-                        <h1 className="text-white text-xl font-bold">Create an account to continue</h1>
+                        <h1 className="dark:text-white text-black text-xl font-bold">Create an account to continue</h1>
                     </div>
                 }
             </div>

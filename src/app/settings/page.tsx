@@ -61,11 +61,11 @@ export default function Settings() {
                         <h5 className="text-xl pl-2 font-medium text-gray-900 dark:text-white">Profile</h5>
                         <div>
                             <label className="block mb-2 pl-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <p className="py-2 bg-slate-500 text-center rounded-2xl text-gray-800">{name}</p>
+                            <p className="py-2 bg-slate-500 text-center rounded-2xl text-white dark:text-gray-800">{name}</p>
                         </div>
                         <div>
                         <label className="block mb-2 pl-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <p className="py-2 bg-slate-500 text-center rounded-2xl text-gray-800">{email}</p>
+                        <p className="py-2 bg-slate-500 text-center rounded-2xl text-white darK:text-gray-800">{email}</p>
                         </div>
                         <div className="w-full flex flex-row justify-center gap-10">
                             <button onClick={reddit ? disconnect : connect} className={`w-96 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center ${ reddit ? 'bg-orange-700 hover:bg-orange-800 focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800' : 'bg-slate-700 hover:bg-slate-800 focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800'}`}>Reddit</button>

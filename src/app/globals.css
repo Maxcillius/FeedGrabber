@@ -30,10 +30,24 @@ body {
 .loader {
   width: 100px;
   height: 40px;
-  --g: radial-gradient(farthest-side,#0000 calc(95% - 3px),#fff calc(100% - 3px) 98%,#0000 101%) no-repeat;
+  --g: radial-gradient(farthest-side, #0000 calc(95% - 3px), #fff calc(100% - 3px) 98%, #0000 101%) no-repeat;
   background: var(--g), var(--g), var(--g);
   background-size: 30px 30px;
   animation: l9 1s infinite alternate;
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  .loader {
+    --g: radial-gradient(farthest-side, #0000 calc(95% - 3px), #000 calc(100% - 3px) 98%, #0000 101%) no-repeat;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .loader {
+    --g: radial-gradient(farthest-side, #0000 calc(95% - 3px), #fff calc(100% - 3px) 98%, #0000 101%) no-repeat;
+  }
 }
 @keyframes l9 {
   0% {
