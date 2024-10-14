@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Feed-Grabber
+
+The goal of this web-app is to get all your favourite socail media home feeds in one place, so you don't have to open all the apps to get updated. This project for now contains only reddit, further more social media platforms will be added.
 
 ## Getting Started
 
